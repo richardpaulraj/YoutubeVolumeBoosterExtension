@@ -59,6 +59,62 @@ Shift + Click to adjust boosting level`
 
         settings.parentNode.insertBefore(boost, settings)
         observe.busy = false //observe.busy
+
+        //Only if the wants to change the value
+        boost.addEventListener('click', (e) => {
+          if (e.shiftKey) {
+            chrome.storage.local.get(
+              {
+                boost: 2,
+              },
+              (res) => {
+                const val = prompt(
+                  'Insert the new boosting level (2, 3, or 4)',
+                  res.boost //The default value of the text input field is set to res.boost,
+                )?.trim() //This is optional chaining (?.) followed by the trim() method if the user clicks on cancel the trim will not work and the val will be null
+
+                if (val === '2' || val === '3' || val === '4') {
+                  chrome.storage.set({
+                    boost: parseInt(val),
+                  })
+                  chrome.runtime.sendMessage({
+                    method: 'adjust_boost',
+                    boost: parseInt(val),
+                  })
+                  text.textContent = val + 'x'
+                }
+              }
+            )
+            return
+          }
+
+          if (boost.classList.contains('boosting')) {
+            chrome.runtime.sendMessage(
+              {
+                method: 'revoke_boost',
+              },
+              () => {
+                boost.classList.remove('boosting')
+                boost.title = msg.replace('curretStatusTemp', 'disabled') //refer the above code I have declared the title refer that
+              }
+            )
+          } else {
+            chrome.runtime.sendMessage(
+              {
+                method: 'apply_boost',
+              },
+              (r) => {
+                // This callback function handles the response received from the background script.
+                if (r === true || r === 'true') {
+                  boost.classList.add('boosting')
+                  boost.title = msg.replace('curretStatusTemp', 'enabled')
+                } else {
+                  alert('Cannot boost this video: ' + r)
+                }
+              }
+            )
+          }
+        })
       }
     )
   }
