@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Volume Booster for YouTube",
+  "version": "1.0",
+  "description": "Boosts the volume of your YouTube videos upto 4x of the full volume",
+  "permissions": ["storage", "scripting"],
+  "host_permissions": ["*://www.youtube.com/*"],
+  "background": {
+    "service_workers": "backgroundScript.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["contentScript.js"],
+      "css": ["contentScript.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  }
+}
