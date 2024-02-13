@@ -1,6 +1,6 @@
 {
   "name": "Volume Booster for YouTube",
-  "description": "Boosts the volume of your YouTube videos upto 4x of the full volume",
+  "description": "Boosts the volume of your YouTube videos upto 6x of the full volume",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "scripting"],

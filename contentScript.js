@@ -69,11 +69,17 @@ Shift + Click to adjust boosting level`
               },
               (res) => {
                 const val = prompt(
-                  'Insert the new boosting level (2, 3, or 4)',
+                  'Insert the new boosting level (2, 3, 4, 5 or 6)',
                   res.boost //The default value of the text input field is set to res.boost,
                 )?.trim() //This is optional chaining (?.) followed by the trim() method if the user clicks on cancel the trim will not work and the val will be null
 
-                if (val === '2' || val === '3' || val === '4') {
+                if (
+                  val === '2' ||
+                  val === '3' ||
+                  val === '4' ||
+                  val === '5' ||
+                  val === '6'
+                ) {
                   text.textContent = val + 'x'
                   chrome.storage.local.set({
                     boost: parseInt(val),
