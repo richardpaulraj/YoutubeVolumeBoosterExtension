@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 const observe = () => {
   if (location.href.includes('/watch?') === false) {
     return
@@ -13,13 +13,12 @@ const observe = () => {
 
   const svgns = 'http://www.w3.org/2000/svg'
   const settings = document.querySelector('.ytp-settings-button')
-  const boost = document.querySelector('ytp-boost-button')
-
+  const boost = document.querySelector('.ytp-boost-button')
   if (settings && !boost) {
     observe.busy = true //observe.busy
     chrome.storage.local.get(
       {
-        boost: 2, //If boost is not present it will use the default value 2
+        boost: 2, //If boost is not present it will use the default value 2 and It will look for this arg ( args: [res.boost] ) which sends the boost value from the background
       },
       (res) => {
         const msg = `Boost volume ${res.boost}x (curretStatusTemp)
@@ -36,7 +35,7 @@ Shift + Click to adjust boosting level`
         When the SVG container is rendered on larger screens or viewports, the text element inside it will also scale accordingly, maintaining its relative size and position within the SVG canvas.
         Thats why we are using SVG just as a Wrapper
         */
-        const svg = document.createAttributeNS(svgns, 'svg')
+        const svg = document.createElementNS(svgns, 'svg')
         svg.setAttribute('height', '100%')
         svg.setAttribute('version', '1.0')
         svg.setAttribute('viewbox', '0 0 42 42')

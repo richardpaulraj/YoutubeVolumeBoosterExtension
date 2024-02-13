@@ -1,12 +1,12 @@
 {
-  "manifest_version": 3,
   "name": "Volume Booster for YouTube",
-  "version": "1.0",
   "description": "Boosts the volume of your YouTube videos upto 4x of the full volume",
+  "version": "1.0",
+  "manifest_version": 3,
   "permissions": ["storage", "scripting"],
   "host_permissions": ["*://www.youtube.com/*"],
   "background": {
-    "service_workers": "backgroundScript.js"
+    "service_worker": "backgroundScript.js"
   },
   "content_scripts": [
     {
@@ -17,16 +17,10 @@
       "all_frames": true
     }
   ],
+  "homepage_url": "https://github.com/richardpaulraj/YoutubeVolumeBoosterExtension",
   "icons": {
     "16": "icon.png",
     "48": "icon.png",
     "128": "icon.png"
-  },
-  "action": {
-    "default_icon": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
-    }
   }
 }
