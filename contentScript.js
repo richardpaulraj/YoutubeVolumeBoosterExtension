@@ -21,14 +21,15 @@ const observe = () => {
         boost: 2, //If boost is not present it will use the default value 2 and It will look for this arg ( args: [res.boost] ) which sends the boost value from the background
       },
       (res) => {
-        const msg = `Boost volume ${res.boost}x (curretStatusTemp)
+        const msg = `Boost volume (currentStatusTemp)
 
 Shift + Click to adjust boosting level`
+
         const boost = Object.assign(settings.cloneNode(true), {
           //This line creates a deep clone of the settings element. It duplicates the settings element along with all of its descendants.
           textContent: '',
           style: '',
-          title: msg.replace('curretStatusTemp', 'disabled'),
+          title: msg.replace('currentStatusTemp', 'disabled'),
         })
         boost.classList.replace('ytp-settings-button', 'ytp-boost-button')
         /*This scalability is a key advantage of SVG elements
@@ -37,13 +38,13 @@ Shift + Click to adjust boosting level`
         */
         const svg = document.createElementNS(svgns, 'svg')
         svg.setAttribute('height', '100%')
-        svg.setAttribute('version', '1.0')
-        svg.setAttribute('viewbox', '0 0 42 42')
+        svg.setAttribute('width', '100%')
+        svg.setAttribute('viewBox', '0 0 42 42')
 
         // The 'text' element is used to display text within an SVG graphic.
-        const text = document.createAttributeNS(svgns, 'text')
-        text.setAttribute('x', '21')
-        text.setAttribute('y', '21')
+        const text = document.createElementNS(svgns, 'text')
+        text.setAttribute('x', '50%')
+        text.setAttribute('y', '50%')
 
         //the dominant-baseline means how the text is vertically aligned Setting it to 'middle' aligns the text vertically centered.
         text.setAttribute('dominant-baseline', 'middle')
@@ -73,14 +74,14 @@ Shift + Click to adjust boosting level`
                 )?.trim() //This is optional chaining (?.) followed by the trim() method if the user clicks on cancel the trim will not work and the val will be null
 
                 if (val === '2' || val === '3' || val === '4') {
-                  chrome.storage.set({
+                  text.textContent = val + 'x'
+                  chrome.storage.local.set({
                     boost: parseInt(val),
                   })
                   chrome.runtime.sendMessage({
                     method: 'adjust_boost',
                     boost: parseInt(val),
                   })
-                  text.textContent = val + 'x'
                 }
               }
             )
@@ -94,7 +95,7 @@ Shift + Click to adjust boosting level`
               },
               () => {
                 boost.classList.remove('boosting')
-                boost.title = msg.replace('curretStatusTemp', 'disabled') //refer the above code I have declared the title refer that
+                boost.title = msg.replace('currentStatusTemp', 'disabled') //refer the above code I have declared the title refer that
               }
             )
           } else {
@@ -106,7 +107,7 @@ Shift + Click to adjust boosting level`
                 // This callback function handles the response received from the background script.
                 if (r === true || r === 'true') {
                   boost.classList.add('boosting')
-                  boost.title = msg.replace('curretStatusTemp', 'enabled')
+                  boost.title = msg.replace('currentStatusTemp', 'enabled')
                 } else {
                   alert('Cannot boost this video: ' + r)
                 }
