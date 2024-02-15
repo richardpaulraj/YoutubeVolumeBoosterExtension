@@ -41,6 +41,19 @@ Shift + Click to adjust boosting level`
         svg.setAttribute('width', '100%')
         svg.setAttribute('viewBox', '0 0 42 42')
 
+        // Create and configure the image element
+        const image = document.createElementNS(svgns, 'image')
+        image.setAttribute(
+          'href',
+          // 'https://test-images.github.io/png/202105/cs-red-f00.png'
+          'icon.png'
+        )
+
+        image.setAttribute('height', '20')
+        image.setAttribute('width', '20')
+        image.setAttribute('x', '11') // Adjust the x position of the image as per your requirement
+        image.setAttribute('y', '11') // Adjust the y position of the image as per your requirement
+
         // The 'text' element is used to display text within an SVG graphic.
         const text = document.createElementNS(svgns, 'text')
         text.setAttribute('x', '50%')
@@ -53,7 +66,7 @@ Shift + Click to adjust boosting level`
         text.setAttribute('font-size', '14px')
 
         text.textContent = res.boost + 'x'
-
+        svg.appendChild(image)
         svg.appendChild(text)
         boost.appendChild(svg)
 
