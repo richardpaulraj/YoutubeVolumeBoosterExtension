@@ -1,7 +1,49 @@
-.ytp-boost-button {
-  fill: #fff;
+#modal {
+  display: none;
+  position: absolute;
+  bottom: 50px;
+  z-index: 10;
+  right: 0;
+  margin: 10px;
 }
-.ytp-boost-button.boosting {
-  fill: #008000;
+
+.modal-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 5px 0;
+  /* width: 300px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#close {
+  color: #ff0000;
+  float: right;
+  font-size: 18px;
   font-weight: bold;
+  cursor: pointer;
+  /* margin-left: 25px; */
+  position: relative;
+  top: 0px;
+}
+#applyButton {
+  margin: 0 15px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+#sliderValue {
+  width: 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.advancedPlaybackIcon,
+.volumeBooster {
+  filter: invert(
+    1
+  ); /*  if you have a black icon on a white background, applying invert(1) will turn the black to white and the white to black. */
 }

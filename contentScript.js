@@ -14,6 +14,9 @@ const observe = () => {
   const svgns = 'http://www.w3.org/2000/svg'
   const settings = document.querySelector('.ytp-settings-button')
   const boost = document.querySelector('.ytp-boost-button')
+  const advancedPlayback = document.querySelector(
+    '.ytp-advanced-playback-button'
+  )
   if (settings && !boost) {
     observe.busy = true //observe.busy
     chrome.storage.local.get(
@@ -26,33 +29,46 @@ const observe = () => {
 Shift + Click to adjust boosting level`
 
         const boost = Object.assign(settings.cloneNode(true), {
-          //This line creates a deep clone of the settings element. It duplicates the settings element along with all of its descendants.
           textContent: '',
           style: '',
           title: msg.replace('currentStatusTemp', 'disabled'),
         })
         boost.classList.replace('ytp-settings-button', 'ytp-boost-button')
-        /*This scalability is a key advantage of SVG elements
-        When the SVG container is rendered on larger screens or viewports, the text element inside it will also scale accordingly, maintaining its relative size and position within the SVG canvas.
-        Thats why we are using SVG just as a Wrapper
-        */
+
         const svg = document.createElementNS(svgns, 'svg')
         svg.setAttribute('height', '100%')
         svg.setAttribute('width', '100%')
         svg.setAttribute('viewBox', '0 0 42 42')
 
-        // The 'text' element is used to display text within an SVG graphic.
-        const text = document.createElementNS(svgns, 'text')
-        text.setAttribute('x', '50%')
-        text.setAttribute('y', '50%')
-        //the dominant-baseline means how the text is vertically aligned Setting it to 'middle' aligns the text vertically centered.
-        text.setAttribute('dominant-baseline', 'middle')
-        //text-anchor means how the text is horizontally aligned Setting it to middle' centers the text horizontally
-        text.setAttribute('text-anchor', 'middle')
-        text.setAttribute('font-size', '14px')
-        text.textContent = res.boost + 'x'
+        // const text = document.createElementNS(svgns, 'text')
+        // text.setAttribute('x', '50%')
+        // text.setAttribute('y', '50%')
+        // text.setAttribute('dominant-baseline', 'middle')
+        // text.setAttribute('text-anchor', 'middle')
+        // text.setAttribute('font-size', '14px')
+        // text.textContent = res.boost + 'x'
 
-        svg.appendChild(text)
+        // svg.appendChild(text)
+
+        // Create image element
+        const image = document.createElementNS(
+          'http://www.w3.org/2000/svg',
+          'image'
+        )
+        image.setAttribute(
+          'href',
+          'https://img.icons8.com/pastel-glyph/64/loudspeaker--v2.png'
+        )
+        image.classList.add('volumeBooster')
+        image.setAttribute('width', '24')
+        image.setAttribute('height', '24')
+        image.setAttribute('x', '9')
+        image.setAttribute('y', '9')
+        image.classList.add('colorizedImg')
+
+        // Append image to SVG
+        svg.appendChild(image)
+
         boost.appendChild(svg)
 
         settings.parentNode.insertBefore(boost, settings)
@@ -68,8 +84,8 @@ Shift + Click to adjust boosting level`
               (res) => {
                 const val = prompt(
                   'Insert the new boosting level (2, 3, 4, 5 or 6)',
-                  res.boost //The default value of the text input field is set to res.boost,
-                )?.trim() //This is optional chaining (?.) followed by the trim() method if the user clicks on cancel the trim will not work and the val will be null
+                  res.boost
+                )?.trim()
 
                 if (
                   val === '2' ||
@@ -99,7 +115,7 @@ Shift + Click to adjust boosting level`
               },
               () => {
                 boost.classList.remove('boosting')
-                boost.title = msg.replace('currentStatusTemp', 'disabled') //refer the above code I have declared the title refer that
+                boost.title = msg.replace('currentStatusTemp', 'disabled')
               }
             )
           } else {
@@ -108,7 +124,6 @@ Shift + Click to adjust boosting level`
                 method: 'apply_boost',
               },
               (r) => {
-                // This callback function handles the response received from the background script.
                 if (r === true || r === 'true') {
                   boost.classList.add('boosting')
                   boost.title = msg.replace('currentStatusTemp', 'enabled')
@@ -121,6 +136,94 @@ Shift + Click to adjust boosting level`
         })
       }
     )
+  }
+  if (settings && !advancedPlayback) {
+    const msg = `Advanced Playback Speed Changer`
+
+    const advancedPlayback = Object.assign(settings.cloneNode(true), {
+      textContent: '',
+      // style: '',
+      title: msg.replace('currentStatusTemp', 'disabled'),
+    })
+    advancedPlayback.classList.replace(
+      'ytp-settings-button',
+      'ytp-advanced-playback-button'
+    )
+
+    const svg = document.createElementNS(svgns, 'svg')
+    svg.setAttribute('height', '100%')
+    svg.setAttribute('width', '100%')
+    svg.setAttribute('viewBox', '0 0 42 42')
+
+    // Create image element
+    const image = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'image'
+    )
+    image.setAttribute(
+      'href',
+      'https://img.icons8.com/ios/50/000000/speed--v1.png'
+    )
+    image.classList.add('advancedPlaybackIcon')
+    image.setAttribute('width', '24')
+    image.setAttribute('height', '24')
+    image.setAttribute('x', '9')
+    image.setAttribute('y', '9')
+
+    // Append image to SVG
+    svg.appendChild(image)
+
+    advancedPlayback.appendChild(svg)
+
+    settings.parentNode.insertBefore(advancedPlayback, settings)
+
+    // Modal code
+    const modalHTML = `
+    <div id="modal"">
+      <div class="modal-content">
+      <input type="range" min="0.1" max="10" step="0.1" id="advancedPlaybackSlider" value = "1.0">
+      <p id="sliderValue">1x</p>
+      <button id="applyButton">Apply</button>
+      <p id="close">x</p>
+      </div>
+    </div>`
+
+    player.appendChild(
+      document.createRange().createContextualFragment(modalHTML)
+    )
+
+    const modal = document.getElementById('modal')
+    const slider = document.getElementById('advancedPlaybackSlider')
+    const modalText = document.getElementById('sliderValue')
+    const closeBtn = document.getElementById('close')
+    const applyBtn = document.getElementById('applyButton')
+
+    advancedPlayback.addEventListener('click', (e) => {
+      if (modal.style.display === 'block') {
+        modal.style.display = 'none'
+      } else {
+        modal.style.display = 'block'
+      }
+    })
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none'
+    })
+
+    slider.addEventListener('input', () => {
+      const val = slider.value
+      modalText.textContent = val + 'x'
+    })
+
+    applyBtn.addEventListener('click', () => {
+      const val = slider.value
+      console.log('Selected value:', val)
+      const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
+      if (video) {
+        video.playbackRate = slider.value
+      }
+      modal.style.display = 'none'
+    })
   }
 }
 
