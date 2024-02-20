@@ -24,14 +24,10 @@ const observe = () => {
         boost: 2, //If boost is not present it will use the default value 2 and It will look for this arg ( args: [res.boost] ) which sends the boost value from the background
       },
       (res) => {
-        const msg = `Boost volume (currentStatusTemp)
-
-Shift + Click to adjust boosting level`
-
         const boost = Object.assign(settings.cloneNode(true), {
           textContent: '',
           style: '',
-          title: msg.replace('currentStatusTemp', 'disabled'),
+          title: `Volume Booster`,
         })
         boost.classList.replace('ytp-settings-button', 'ytp-boost-button')
 
@@ -39,16 +35,6 @@ Shift + Click to adjust boosting level`
         svg.setAttribute('height', '100%')
         svg.setAttribute('width', '100%')
         svg.setAttribute('viewBox', '0 0 42 42')
-
-        // const text = document.createElementNS(svgns, 'text')
-        // text.setAttribute('x', '50%')
-        // text.setAttribute('y', '50%')
-        // text.setAttribute('dominant-baseline', 'middle')
-        // text.setAttribute('text-anchor', 'middle')
-        // text.setAttribute('font-size', '14px')
-        // text.textContent = res.boost + 'x'
-
-        // svg.appendChild(text)
 
         // Create image element
         const image = document.createElementNS(
@@ -72,10 +58,81 @@ Shift + Click to adjust boosting level`
         boost.appendChild(svg)
 
         settings.parentNode.insertBefore(boost, settings)
-        observe.busy = false //observe.busy
 
-        //Only if the wants to change the value
+        observe.busy = false
+
+        // Only if the wants to change the value
         boost.addEventListener('click', (e) => {
+          //Test
+
+          // Modal code
+          const modalHTML = `<div id="modalVolumeBooster">
+  <div id="modal-header">
+    <p>Volume Booster</p>
+    <div id="closeNEW"><span>X</span></div>
+  </div>
+  <div id="singleLine"></div>
+  <div class="rangeContainer">
+    Boost :
+    <input
+      type="range"
+      min="1"
+      max="6"
+      step="1"
+      id="advancedPlaybackSliderNEW"
+      value="1"
+    />
+    <div id="sliderValueNEW">1x</div>
+  </div>
+  <div id="defaultButtonCont">
+    <button id="defaultButtonNEW">Set to Default</button>
+  </div>
+</div>`
+
+          player.appendChild(
+            document.createRange().createContextualFragment(modalHTML)
+          )
+
+          const modal = document.getElementById('modalVolumeBooster')
+          const slider = document.getElementById('advancedPlaybackSliderNEW')
+          const modalText = document.getElementById('sliderValueNEW')
+          const closeBtn = document.getElementById('closeNEW')
+          const defaultButton = document.getElementById('defaultButtonNEW')
+
+          if (modal.style.display === 'block') {
+            modal.style.display = 'none'
+          } else {
+            modal.style.display = 'block'
+          }
+
+          closeBtn.addEventListener('click', () => {
+            console.log('close btn clicked')
+            modal.style.display = 'none'
+          })
+
+          slider.addEventListener('mousemove', (e) => {
+            modalText.textContent = slider.value + 'x'
+          })
+
+          defaultButton.addEventListener('click', () => {
+            console.log('deafult btn clicked') //Not Working
+            slider.value = 1
+            modalText.textContent = slider.value + 'x'
+
+            const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
+            if (video) {
+              video.playbackRate = slider.value
+            }
+          })
+
+          slider.addEventListener('input', () => {
+            // const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
+            // if (video) {
+            //   video.playbackRate = slider.value
+            // }
+          })
+          //TEst
+
           if (e.shiftKey) {
             chrome.storage.local.get(
               {
@@ -115,7 +172,7 @@ Shift + Click to adjust boosting level`
               },
               () => {
                 boost.classList.remove('boosting')
-                boost.title = msg.replace('currentStatusTemp', 'disabled')
+                // boost.title = msg.replace('currentStatusTemp', 'disabled')
               }
             )
           } else {
@@ -126,7 +183,7 @@ Shift + Click to adjust boosting level`
               (r) => {
                 if (r === true || r === 'true') {
                   boost.classList.add('boosting')
-                  boost.title = msg.replace('currentStatusTemp', 'enabled')
+                  // boost.title = msg.replace('currentStatusTemp', 'enabled')
                 } else {
                   alert('Cannot boost this video: ' + r)
                 }
@@ -138,12 +195,10 @@ Shift + Click to adjust boosting level`
     )
   }
   if (settings && !advancedPlayback) {
-    const msg = `Advanced Playback Speed Changer`
-
     const advancedPlayback = Object.assign(settings.cloneNode(true), {
       textContent: '',
-      // style: '',
-      title: msg.replace('currentStatusTemp', 'disabled'),
+      style: '',
+      title: `Advanced Playback Speed`,
     })
     advancedPlayback.classList.replace(
       'ytp-settings-button',
@@ -179,14 +234,30 @@ Shift + Click to adjust boosting level`
 
     // Modal code
     const modalHTML = `
-    <div id="modal"">
-      <div class="modal-content">
-      <input type="range" min="0.1" max="10" step="0.1" id="advancedPlaybackSlider" value = "1.0">
-      <p id="sliderValue">1x</p>
-      <button id="applyButton">Apply</button>
-      <p id="close">x</p>
-      </div>
-    </div>`
+<div id="modal">
+  <div id="modal-header">
+    <p>Playback Speed</p>
+    <div id="close"><span>X</span></div>
+  </div>
+  <div id="singleLine"></div>
+  <div class="rangeContainer">
+    Speed :
+    <input
+      type="range"
+      min="0.1"
+      max="6"
+      step="0.1"
+      id="advancedPlaybackSlider"
+      value="1.0"
+    />
+    <div id="sliderValue">1x</div>
+  </div>
+  <div id="defaultButtonCont">
+    <button id="defaultButton">Set to Default</button>
+  </div>
+</div>
+
+    `
 
     player.appendChild(
       document.createRange().createContextualFragment(modalHTML)
@@ -196,7 +267,7 @@ Shift + Click to adjust boosting level`
     const slider = document.getElementById('advancedPlaybackSlider')
     const modalText = document.getElementById('sliderValue')
     const closeBtn = document.getElementById('close')
-    const applyBtn = document.getElementById('applyButton')
+    const defaultButton = document.getElementById('defaultButton')
 
     advancedPlayback.addEventListener('click', (e) => {
       if (modal.style.display === 'block') {
@@ -210,19 +281,25 @@ Shift + Click to adjust boosting level`
       modal.style.display = 'none'
     })
 
-    slider.addEventListener('input', () => {
-      const val = slider.value
-      modalText.textContent = val + 'x'
+    slider.addEventListener('mousemove', (e) => {
+      modalText.textContent = slider.value + 'x'
     })
 
-    applyBtn.addEventListener('click', () => {
-      const val = slider.value
-      console.log('Selected value:', val)
+    defaultButton.addEventListener('click', () => {
+      slider.value = 1
+      modalText.textContent = slider.value + 'x'
+
       const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
       if (video) {
         video.playbackRate = slider.value
       }
-      modal.style.display = 'none'
+    })
+
+    slider.addEventListener('input', () => {
+      const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
+      if (video) {
+        video.playbackRate = slider.value
+      }
     })
   }
 }

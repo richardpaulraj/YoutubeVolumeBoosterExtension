@@ -110,7 +110,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
           const video = player.querySelector('video')
 
           if (video.preamp) {
-            video.preamp.gain.value = val
+            video.preamp.gain.value = val //Logic
           }
         } catch (e) {}
       },

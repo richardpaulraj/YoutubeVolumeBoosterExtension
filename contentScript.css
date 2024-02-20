@@ -1,32 +1,42 @@
-#modal {
+#modal,
+#modalVolumeBooster {
+  background-color: rgba(0, 0, 0, 0.7);
   display: none;
   position: absolute;
-  bottom: 50px;
+  bottom: 150px;
   z-index: 10;
   right: 0;
   margin: 10px;
+  width: 230px;
+  border-radius: 5px;
 }
 
-.modal-content {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 5px 0;
-  /* width: 300px; */
+.rangeContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
   padding: 10px;
+  font-size: 12px;
 }
 
-#close {
-  color: #ff0000;
+#close,
+#closeNEW {
   float: right;
-  font-size: 18px;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
   font-weight: bold;
   cursor: pointer;
-  /* margin-left: 25px; */
-  position: relative;
-  top: 0px;
+  border: none;
+  background-color: #ff0000a1;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#close:hover {
+  background-color: #ff0000bf;
 }
 #applyButton {
   margin: 0 15px;
@@ -35,15 +45,95 @@
   border-radius: 5px;
   padding: 4px 8px;
 }
-#sliderValue {
-  width: 15px;
-  color: white;
+#sliderValue,
+#sliderValueNEW {
   font-weight: bold;
-  cursor: pointer;
+  user-select: none;
+  width: 25px;
+  text-align: center;
+  color: #fff;
+  padding: 3px;
+  border-radius: 5px;
+  z-index: 1;
 }
 .advancedPlaybackIcon,
 .volumeBooster {
   filter: invert(
     1
   ); /*  if you have a black icon on a white background, applying invert(1) will turn the black to white and the white to black. */
+}
+#modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#defaultButton,
+#defaultButtonNEW {
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  background-color: #ff0000a1;
+  color: white;
+}
+
+#defaultButton:hover,
+#defaultButtonNEW:hover {
+  background-color: #ff0000bf;
+  cursor: pointer;
+  transform: scale(0.98);
+}
+#defaultButtonCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+#modal-header {
+  font-size: 14px;
+  margin: 5px 0;
+  padding: 5px;
+}
+#singleLine {
+  height: 1px;
+  width: 100%;
+  background-color: grey;
+}
+
+#advancedPlaybackSlider,
+#advancedPlaybackSliderNEW {
+  /* Change the track color */
+  --webkit-appearance: none;
+  appearance: none;
+  height: 5px; /* Set the height of the slider */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for visual effect) */
+  transition: opacity 0.2s;
+  margin-top: 0;
+  margin-left: 5px;
+}
+
+/* Customize the thumb (handle) of the range input */
+#advancedPlaybackSlider::-webkit-slider-thumb,
+#advancedPlaybackSliderNEW::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; /* Set the width of the thumb */
+  height: 20px; /* Set the height of the thumb */
+  background: #fc0000; /* Green background */
+  cursor: pointer; /* Add cursor pointer on hover */
+  border-radius: 50%; /* Rounded corners */
+}
+
+#testing {
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  position: absolute;
+  bottom: 150px;
+  z-index: 10;
+  right: 0;
+  margin: 10px;
+  width: 230px;
+  border-radius: 5px;
 }
