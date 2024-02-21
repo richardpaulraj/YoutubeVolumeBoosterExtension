@@ -7,9 +7,6 @@ const observe = () => {
   if (!player) {
     return
   }
-  if (observe.busy) {
-    return
-  }
 
   const svgns = 'http://www.w3.org/2000/svg'
   const settings = document.querySelector('.ytp-settings-button')
@@ -21,7 +18,7 @@ const observe = () => {
     const boost = Object.assign(settings.cloneNode(true), {
       textContent: '',
       style: '',
-      title: `Volume Booster`,
+      title: '',
     })
     boost.classList.replace('ytp-settings-button', 'ytp-boost-button')
 
@@ -53,12 +50,8 @@ const observe = () => {
 
     settings.parentNode.insertBefore(boost, settings)
 
-    // Only if the wants to change the value
-    let boostButtonClicked = false
-
-    boost.addEventListener('click', (e) => {
-      // Modal code
-      const modalHTML = `<div id="modalVolumeBooster">
+    // Modal code
+    const modalHTML = `<div id="modalVolumeBooster">
   <div id="modal-header">
     <p>Volume Booster</p>
     <div id="closeNEW"><span>X</span></div>
@@ -81,15 +74,45 @@ const observe = () => {
   </div>
 </div>`
 
-      const player = [...document.querySelectorAll('.html5-video-player')]
-        .sort((a, b) => {
-          return b.offsetHeight - a.offsetHeight
-        })
-        .shift() //Actually there are multiple html5 video player but we a picking the largest one using shift()
+    const modalHTMLVolumeBoosterToggle = `
+    <div id='volumeBoosterToggle'>Volume Booster</div>
+    `
 
-      player.appendChild(
-        document.createRange().createContextualFragment(modalHTML)
-      )
+    const player = [...document.querySelectorAll('.html5-video-player')]
+      .sort((a, b) => {
+        return b.offsetHeight - a.offsetHeight
+      })
+      .shift() //Actually there are multiple html5 video player but we a picking the largest one using shift()
+
+    player.appendChild(
+      document.createRange().createContextualFragment(modalHTML)
+    )
+
+    player.appendChild(
+      document
+        .createRange()
+        .createContextualFragment(modalHTMLVolumeBoosterToggle)
+    )
+
+    const volumeBoosterToggle = document.getElementById('volumeBoosterToggle')
+
+    if (boost && volumeBoosterToggle) {
+      boost.addEventListener('mouseenter', () => {
+        volumeBoosterToggle.style.display = 'block'
+      })
+      boost.addEventListener('mouseleave', () => {
+        volumeBoosterToggle.style.display = 'none'
+      })
+    }
+
+    // Only if the wants to change the value
+    let boostButtonClicked = false
+
+    boost.addEventListener('click', (e) => {
+      //hiding the other one
+      if (document.getElementById('modal')) {
+        document.getElementById('modal').style.display = 'none'
+      }
 
       const modal = document.getElementById('modalVolumeBooster')
 
@@ -174,7 +197,7 @@ const observe = () => {
     const advancedPlayback = Object.assign(settings.cloneNode(true), {
       textContent: '',
       style: '',
-      title: `Advanced Playback Speed`,
+      title: '',
     })
     advancedPlayback.classList.replace(
       'ytp-settings-button',
@@ -235,10 +258,29 @@ const observe = () => {
 
     `
 
+    const modalHTMLPlaybackSpeedToggle = `
+    <div id='playbackSpeedToggle'>Playback Speed</div>
+    `
+
     player.appendChild(
       document.createRange().createContextualFragment(modalHTML)
     )
+    player.appendChild(
+      document
+        .createRange()
+        .createContextualFragment(modalHTMLPlaybackSpeedToggle)
+    )
 
+    const playbackSpeedToggle = document.getElementById('playbackSpeedToggle')
+
+    if (advancedPlayback && playbackSpeedToggle) {
+      advancedPlayback.addEventListener('mouseenter', () => {
+        playbackSpeedToggle.style.display = 'block'
+      })
+      advancedPlayback.addEventListener('mouseleave', () => {
+        playbackSpeedToggle.style.display = 'none'
+      })
+    }
     const modal = document.getElementById('modal')
     const slider = document.getElementById('advancedPlaybackSlider')
     const modalText = document.getElementById('sliderValue')
@@ -246,6 +288,12 @@ const observe = () => {
     const defaultButton = document.getElementById('defaultButton')
 
     advancedPlayback.addEventListener('click', (e) => {
+      //Hiding the other one
+
+      if (document.getElementById('modalVolumeBooster')) {
+        document.getElementById('modalVolumeBooster').style.display = 'none'
+      }
+
       if (modal.style.display === 'block') {
         modal.style.display = 'none'
       } else {

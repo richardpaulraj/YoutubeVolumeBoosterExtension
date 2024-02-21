@@ -1,15 +1,41 @@
 #modal,
 #modalVolumeBooster {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
   display: none;
   position: absolute;
-  bottom: 150px;
-  z-index: 10;
+  bottom: 62px;
+  z-index: 99;
   right: 0;
-  margin: 10px;
+  margin: 0 1rem;
   width: 230px;
   border-radius: 5px;
   border: 1px solid grey;
+}
+#playbackSpeedToggle {
+  background-color: rgba(34, 33, 31, 255);
+  display: none;
+  padding: 4px 8px;
+  position: absolute;
+  bottom: 60px;
+  z-index: 99;
+  right: 164px;
+  margin: 0 1rem;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 13px;
+}
+#volumeBoosterToggle {
+  background-color: rgba(34, 33, 31, 255);
+  display: none;
+  padding: 4px 8px;
+  position: absolute;
+  bottom: 60px;
+  z-index: 99;
+  margin: 0 1rem;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 13px;
+  right: 210px;
 }
 
 .rangeContainer,
@@ -138,4 +164,31 @@
   margin: 10px;
   width: 230px;
   border-radius: 5px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style the tooltip text */
+.tooltip .tooltiptext {
+  /* visibility: hidden; */
+  visibility: visible;
+  background-color: grey;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position the tooltip text */
+  left: 50%;
+  margin-left: -60px; /* Adjust the margin to center the tooltip text */
+  white-space: nowrap; /* Prevent line breaks */
+}
+
+/* Show the tooltip text when hovering over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
