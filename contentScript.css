@@ -9,9 +9,11 @@
   margin: 10px;
   width: 230px;
   border-radius: 5px;
+  border: 1px solid grey;
 }
 
-.rangeContainer {
+.rangeContainer,
+.rangeContainerNEW {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +21,7 @@
   font-size: 12px;
 }
 
-#close,
+#closePlaybackSpeed,
 #closeNEW {
   float: right;
   font-size: 12px;

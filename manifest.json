@@ -5,9 +5,7 @@
   "manifest_version": 3,
   "permissions": ["storage", "scripting"],
   "host_permissions": ["*://www.youtube.com/*"],
-  "background": {
-    "service_worker": "backgroundScript.js"
-  },
+
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
