@@ -1,6 +1,6 @@
 {
-  "name": "Volume Booster for YouTube",
-  "description": "Boosts the volume of your YouTube videos upto 6x of the full volume",
+  "name": "YouTube Productivity",
+  "description": "Boost your YouTube productivity with our extension: enjoy up to 6x playback speed and a powerful volume booster for clearer and louder audio, enabling faster content consumption.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "scripting"],
