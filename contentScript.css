@@ -1,5 +1,5 @@
-#modal,
-#modalVolumeBooster {
+#modalSpeed,
+#modalBoost {
   background-color: rgba(0, 0, 0, 0.8);
   display: none;
   position: absolute;
@@ -11,7 +11,7 @@
   border-radius: 5px;
   border: 1px solid grey;
 }
-#playbackSpeedToggle {
+#tooltipTextSpeed {
   background-color: rgba(34, 33, 31, 255);
   display: none;
   padding: 4px 8px;
@@ -24,7 +24,7 @@
   font-weight: bold;
   font-size: 13px;
 }
-#volumeBoosterToggle {
+#tooltipTextBoost {
   background-color: rgba(34, 33, 31, 255);
   display: none;
   padding: 4px 8px;
@@ -38,8 +38,7 @@
   right: 210px;
 }
 
-.rangeContainer,
-.rangeContainerNEW {
+.rangeContainer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,8 +46,8 @@
   font-size: 12px;
 }
 
-#closePlaybackSpeed,
-#closeNEW {
+#closeSpeed,
+#closeBoost {
   float: right;
   font-size: 12px;
   width: 20px;
@@ -66,15 +65,15 @@
 #close:hover {
   background-color: #ff0000bf;
 }
-#applyButton {
+/* #applyButton {
   margin: 0 15px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   padding: 4px 8px;
-}
-#sliderValue,
-#sliderValueNEW {
+} */
+#sliderSpeedValue,
+#sliderBoostValue {
   font-weight: bold;
   user-select: none;
   width: 25px;
@@ -84,19 +83,15 @@
   border-radius: 5px;
   z-index: 1;
 }
-.advancedPlaybackIcon,
-.volumeBooster {
+
+.icon {
   filter: invert(
     1
   ); /*  if you have a black icon on a white background, applying invert(1) will turn the black to white and the white to black. */
 }
-#modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-#defaultButton,
-#defaultButtonNEW {
+
+#defaultSpeedButton,
+#defaultBoostButton {
   padding: 5px;
   border: none;
   border-radius: 5px;
@@ -105,31 +100,36 @@
   color: white;
 }
 
-#defaultButton:hover,
-#defaultButtonNEW:hover {
+#defaultSpeedButton:hover,
+#defaultBoostButton:hover {
   background-color: #ff0000bf;
   cursor: pointer;
   transform: scale(0.98);
 }
-#defaultButtonCont {
+.defaultButtonCont {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-bottom: 10px;
 }
-#modal-header {
+.modal-header {
   font-size: 14px;
   margin: 5px 0;
   padding: 5px;
 }
-#singleLine {
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.singleLine {
   height: 1px;
   width: 100%;
   background-color: grey;
 }
 
-#advancedPlaybackSlider,
-#advancedPlaybackSliderNEW {
+#sliderSpeed,
+#sliderBoost {
   /* Change the track color */
   --webkit-appearance: none;
   appearance: none;
@@ -143,8 +143,8 @@
 }
 
 /* Customize the thumb (handle) of the range input */
-#advancedPlaybackSlider::-webkit-slider-thumb,
-#advancedPlaybackSliderNEW::-webkit-slider-thumb {
+#sliderSpeed::-webkit-slider-thumb,
+#sliderBoost::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 20px; /* Set the width of the thumb */
@@ -152,43 +152,4 @@
   background: #fc0000; /* Green background */
   cursor: pointer; /* Add cursor pointer on hover */
   border-radius: 50%; /* Rounded corners */
-}
-
-#testing {
-  background-color: rgba(0, 0, 0, 0.7);
-  display: none;
-  position: absolute;
-  bottom: 150px;
-  z-index: 10;
-  right: 0;
-  margin: 10px;
-  width: 230px;
-  border-radius: 5px;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-/* Style the tooltip text */
-.tooltip .tooltiptext {
-  /* visibility: hidden; */
-  visibility: visible;
-  background-color: grey;
-  color: white;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%; /* Position the tooltip text */
-  left: 50%;
-  margin-left: -60px; /* Adjust the margin to center the tooltip text */
-  white-space: nowrap; /* Prevent line breaks */
-}
-
-/* Show the tooltip text when hovering over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
 }

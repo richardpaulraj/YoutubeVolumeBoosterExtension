@@ -1,4 +1,5 @@
 // 'use strict'
+
 const observe = () => {
   if (location.href.includes('/watch?') === false) {
     return
@@ -36,7 +37,7 @@ const observe = () => {
       'href',
       'https://img.icons8.com/pastel-glyph/64/loudspeaker--v2.png'
     )
-    image.classList.add('volumeBooster')
+    image.classList.add('icon')
     image.setAttribute('width', '24')
     image.setAttribute('height', '24')
     image.setAttribute('x', '9')
@@ -50,83 +51,18 @@ const observe = () => {
 
     settings.parentNode.insertBefore(boost, settings)
 
-    // Modal code
-    const modalHTML = `<div id="modalVolumeBooster">
-  <div id="modal-header">
-    <p>Volume Booster</p>
-    <div id="closeNEW"><span>X</span></div>
-  </div>
-  <div id="singleLine"></div>
-  <div class="rangeContainerNEW">
-    Boost :
-    <input
-      type="range"
-      min="1"
-      max="6"
-      step="1"
-      id="advancedPlaybackSliderNEW"
-      value="1"
-    />
-    <div id="sliderValueNEW">1x</div>
-  </div>
-  <div id="defaultButtonCont">
-    <button id="defaultButtonNEW">Set to Default</button>
-  </div>
-</div>`
-
-    const modalHTMLVolumeBoosterToggle = `
-    <div id='volumeBoosterToggle'>Volume Booster</div>
-    `
-
-    const player = [...document.querySelectorAll('.html5-video-player')]
-      .sort((a, b) => {
-        return b.offsetHeight - a.offsetHeight
-      })
-      .shift() //Actually there are multiple html5 video player but we a picking the largest one using shift()
-
+    const modalHTML = createModalHTML('Boost')
     player.appendChild(
       document.createRange().createContextualFragment(modalHTML)
     )
 
-    player.appendChild(
-      document
-        .createRange()
-        .createContextualFragment(modalHTMLVolumeBoosterToggle)
-    )
-
-    const volumeBoosterToggle = document.getElementById('volumeBoosterToggle')
-
-    if (boost && volumeBoosterToggle) {
-      boost.addEventListener('mouseenter', () => {
-        volumeBoosterToggle.style.display = 'block'
-      })
-      boost.addEventListener('mouseleave', () => {
-        volumeBoosterToggle.style.display = 'none'
-      })
-    }
-
-    // Only if the wants to change the value
-    let boostButtonClicked = false
+    tooltipText('Boost')
+    toggleTooltip('Boost', boost)
 
     boost.addEventListener('click', (e) => {
-      //hiding the other one
-      if (document.getElementById('modal')) {
-        document.getElementById('modal').style.display = 'none'
+      if (document.getElementById('modalSpeed')) {
+        closeModal('Speed') //If the Other Modal is Open then it will close it
       }
-
-      const modal = document.getElementById('modalVolumeBooster')
-
-      if (modal.style.display === 'block') {
-        modal.style.display = 'none'
-      } else {
-        modal.style.display = 'block'
-      }
-
-      if (boostButtonClicked) {
-        return
-      }
-
-      boostButtonClicked = true
 
       const video = player.querySelector('video')
 
@@ -151,45 +87,28 @@ const observe = () => {
           preamp: preamp,
         }
       }
-
-      const slider = document.getElementById('advancedPlaybackSliderNEW')
-      const modalText = document.getElementById('sliderValueNEW')
-      const closeBtn = document.getElementById('closeNEW')
-      const defaultButton = document.getElementById('defaultButtonNEW')
+      const modal = document.getElementById('modalBoost')
+      const slider = document.getElementById('sliderBoost')
+      const closeBtn = document.getElementById('closeBoost')
+      const defaultButton = document.getElementById('defaultBoostButton')
 
       if (modal.style.display === 'block') {
-        modal.style.display = 'none'
+        closeModal('Boost')
       } else {
-        modal.style.display = 'block'
+        openModal('Boost')
       }
 
       closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none'
+        closeModal('Boost')
       })
 
-      slider.addEventListener('mousemove', (e) => {
-        modalText.textContent = slider.value + 'x'
-      })
+      updateModalText('Boost')
 
       defaultButton.addEventListener('click', () => {
-        slider.value = 1
-        modalText.textContent = slider.value + 'x'
-
-        const video = document.querySelector('video')
-
-        if (video && video.booster) {
-          video.booster.preamp.gain.value = 1 // Reset volume booster to 1
-        }
+        defaultButtonLogic('Boost')
       })
 
-      slider.addEventListener('input', () => {
-        const video = player.querySelector('video')
-
-        if (video && video.booster) {
-          video.booster.preamp.gain.value = slider.value // Set volume booster gain to slider value
-        }
-      })
-      //TEst
+      slider.addEventListener('input', boostLogic)
     })
   }
 
@@ -218,7 +137,7 @@ const observe = () => {
       'href',
       'https://img.icons8.com/ios/50/000000/speed--v1.png'
     )
-    image.classList.add('advancedPlaybackIcon')
+    image.classList.add('icon')
     image.setAttribute('width', '24')
     image.setAttribute('height', '24')
     image.setAttribute('x', '9')
@@ -231,101 +150,161 @@ const observe = () => {
 
     settings.parentNode.insertBefore(advancedPlayback, settings)
 
-    // Modal code
-    const modalHTML = `
-<div id="modal">
-  <div id="modal-header">
-    <p>Playback Speed</p>
-    <div id="closePlaybackSpeed"><span>X</span></div>
-  </div>
-  <div id="singleLine"></div>
-  <div class="rangeContainer">
-    Speed :
-    <input
-      type="range"
-      min="0.1"
-      max="6"
-      step="0.1"
-      id="advancedPlaybackSlider"
-      value="1.0"
-    />
-    <div id="sliderValue">1x</div>
-  </div>
-  <div id="defaultButtonCont">
-    <button id="defaultButton">Set to Default</button>
-  </div>
-</div>
-
-    `
-
-    const modalHTMLPlaybackSpeedToggle = `
-    <div id='playbackSpeedToggle'>Playback Speed</div>
-    `
-
+    const modalHTML = createModalHTML('Speed') //Created a Function below
     player.appendChild(
       document.createRange().createContextualFragment(modalHTML)
     )
-    player.appendChild(
-      document
-        .createRange()
-        .createContextualFragment(modalHTMLPlaybackSpeedToggle)
-    )
 
-    const playbackSpeedToggle = document.getElementById('playbackSpeedToggle')
+    tooltipText('Speed')
 
-    if (advancedPlayback && playbackSpeedToggle) {
-      advancedPlayback.addEventListener('mouseenter', () => {
-        playbackSpeedToggle.style.display = 'block'
-      })
-      advancedPlayback.addEventListener('mouseleave', () => {
-        playbackSpeedToggle.style.display = 'none'
-      })
-    }
-    const modal = document.getElementById('modal')
-    const slider = document.getElementById('advancedPlaybackSlider')
-    const modalText = document.getElementById('sliderValue')
-    const closeBtn = document.getElementById('closePlaybackSpeed')
-    const defaultButton = document.getElementById('defaultButton')
+    toggleTooltip('Speed', advancedPlayback)
+
+    const modal = document.getElementById('modalSpeed')
+    const slider = document.getElementById('sliderSpeed')
+    const closeBtn = document.getElementById('closeSpeed')
+    const defaultButton = document.getElementById('defaultSpeedButton')
 
     advancedPlayback.addEventListener('click', (e) => {
-      //Hiding the other one
-
-      if (document.getElementById('modalVolumeBooster')) {
-        document.getElementById('modalVolumeBooster').style.display = 'none'
+      if (document.getElementById('modalBoost')) {
+        closeModal('Boost') //If the Other Modal is Open then it will close it
       }
 
       if (modal.style.display === 'block') {
-        modal.style.display = 'none'
+        closeModal('Speed')
       } else {
-        modal.style.display = 'block'
+        openModal('Speed')
       }
     })
 
     closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none'
+      closeModal('Speed')
     })
 
-    slider.addEventListener('mousemove', (e) => {
-      modalText.textContent = slider.value + 'x'
-    })
+    updateModalText('Speed')
 
     defaultButton.addEventListener('click', () => {
-      slider.value = 1
-      modalText.textContent = slider.value + 'x'
-
-      const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
-      if (video) {
-        video.playbackRate = slider.value
-      }
+      defaultButtonLogic('Speed')
     })
 
-    slider.addEventListener('input', () => {
-      const video = document.querySelector('video') //I directly used the video element you can also do with 'const player'
-      if (video) {
-        video.playbackRate = slider.value
-      }
+    slider.addEventListener('input', speedLogic)
+  }
+}
+
+function toggleTooltip(name, icon) {
+  const toggle = document.getElementById(`tooltipText${name}`)
+
+  if (icon && toggle) {
+    icon.addEventListener('mouseenter', () => {
+      toggle.style.display = 'block'
+    })
+    icon.addEventListener('mouseleave', () => {
+      toggle.style.display = 'none'
     })
   }
+}
+
+function updateModalText(name) {
+  const slider = document.getElementById(`slider${name}`)
+  const modalText = document.getElementById(`slider${name}Value`)
+
+  slider.addEventListener('mousemove', () => {
+    modalText.textContent = slider.value + 'x'
+  })
+  slider.addEventListener('change', () => {
+    modalText.textContent = slider.value + 'x'
+  })
+}
+
+function closeModal(name) {
+  const modal = document.getElementById(`modal${name}`)
+  modal.style.display = 'none'
+}
+function openModal(name) {
+  const modal = document.getElementById(`modal${name}`)
+  modal.style.display = 'block'
+}
+
+function defaultButtonLogic(name) {
+  const slider = document.getElementById(`slider${name}`)
+  const modalText = document.getElementById(`slider${name}Value`)
+  const video = document.querySelector('video')
+
+  slider.value = 1
+  modalText.textContent = slider.value + 'x'
+
+  if (video && video.booster && name === 'Boost') {
+    video.booster.preamp.gain.value = 1 // Reset volume booster to 1
+  } else if (video && name === 'Speed') {
+    video.playbackRate = slider.value
+  }
+}
+
+function speedLogic() {
+  const video = document.querySelector('video')
+  const slider = document.getElementById('sliderSpeed')
+
+  if (video) {
+    video.playbackRate = slider.value
+  }
+}
+
+function boostLogic() {
+  const video = document.querySelector('video')
+  const slider = document.getElementById('sliderBoost')
+
+  if (video && video.booster) {
+    video.booster.preamp.gain.value = slider.value // Set volume booster gain to slider value
+  }
+}
+
+function tooltipText(name) {
+  let displayName = name === 'Speed' ? 'Playback Speed' : 'Volume Booster'
+
+  const tooltipDisplayText = `
+    <div id='tooltipText${name}'>${displayName}</div>
+    `
+  const player = document.querySelector('.html5-video-player')
+
+  player.appendChild(
+    document.createRange().createContextualFragment(tooltipDisplayText)
+  )
+}
+
+function createModalHTML(name) {
+  let fullName = name === 'Boost' ? 'Volume Booster' : 'Playback Speed'
+  let stepValue = name === 'Boost' ? '1' : '0.1'
+  let minValue = name === 'Boost' ? '1' : '0.1'
+  return `
+    <div id="modal${name}">
+
+      <div class="modal-header">
+        <p>${fullName}</p>
+        <div id="close${name}"><span>X</span></div>
+      </div>
+
+      <div class="singleLine"></div>
+
+      <div class="rangeContainer">
+
+        ${name} :
+        <input
+          type="range"
+          min= ${minValue}
+          max="6"
+          step= ${stepValue}
+          id="slider${name}"
+          value="1"
+        />
+
+        <div id="slider${name}Value">1x</div>
+
+      </div>
+
+      <div class="defaultButtonCont">
+        <button id="default${name}Button">Set to Default</button>
+      </div>
+
+    </div>`
 }
 
 addEventListener('yt-navigate-finish', observe)
